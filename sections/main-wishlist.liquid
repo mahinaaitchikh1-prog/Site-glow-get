@@ -1,0 +1,29 @@
+<section class="wishlist section-space" data-wishlist-page>
+  <div class="page-width">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">{{ section.settings.kicker }}</p>
+      <h1 class="section-head__title">{{ section.settings.title }}</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+
+    <div class="grid grid--products" style="--cols: 4;" data-wishlist-grid aria-live="polite"></div>
+
+    <div class="cart-empty" data-wishlist-empty hidden>
+      {% render 'ornament', type: 'bow', class: 'cart-empty__bow' %}
+      <p class="cart-empty__title">Aucun favori pour le moment</p>
+      <p class="cart-empty__text">Touchez le cœur d'un article pour le retrouver ici.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--solid">Découvrir la boutique</a>
+    </div>
+    <p class="wishlist__note">Vos favoris sont enregistrés sur cet appareil.</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Mes favoris",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "vos coups de cœur" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "MES FAVORIS" }
+  ]
+}
+{% endschema %}

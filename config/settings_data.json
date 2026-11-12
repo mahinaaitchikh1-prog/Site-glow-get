@@ -1,0 +1,20 @@
+{
+  "current": {
+    "color_bordeaux": "#5A1A2B",
+    "color_bordeaux_deep": "#40101D",
+    "color_rose": "#ECCDCB",
+    "color_rose_light": "#F6E4E1",
+    "color_pearl": "#DCD8D5",
+    "color_pearl_light": "#E8E5E2",
+    "color_cream": "#FBF6F0",
+    "color_ink": "#2B2326",
+    "page_width": 1480,
+    "product_ratio": "3 / 4",
+    "cart_type": "drawer",
+    "snapchat_handle": "glow.get",
+    "tiktok_handle": "glow.get"
+  },
+  "presets": {
+    "GLOW&GET": {}
+  }
+}

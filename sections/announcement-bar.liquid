@@ -1,0 +1,37 @@
+{%- assign msgs = section.blocks | where: 'type', 'message' -%}
+<div class="announce" {{ section.shopify_attributes }}>
+  <div class="announce__inner page-width" data-announce>
+    {% render 'ornament', type: 'star', class: 'announce__star' %}
+    <div class="announce__track">
+      {%- for block in msgs -%}
+        <p class="announce__msg{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+          {%- else -%}
+            {{ block.settings.text }}
+          {%- endif -%}
+        </p>
+      {%- endfor -%}
+    </div>
+    {% render 'ornament', type: 'star', class: 'announce__star' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bandeau d'annonce",
+  "class": "section-announce",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Annonce",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texte", "default": "Livraison offerte en France dès 80 €" },
+        { "type": "url", "id": "link", "label": "Lien (facultatif)" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Bandeau d'annonce" }]
+}
+{% endschema %}

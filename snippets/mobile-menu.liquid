@@ -1,0 +1,35 @@
+<nav class="drawer drawer--left" id="MenuDrawer" aria-label="Menu principal" data-panel="menu" hidden>
+  <div class="drawer__head">
+    {% render 'logo', size: 'header' %}
+    <button type="button" class="icon-btn" data-close aria-label="Fermer le menu">{% render 'icon', name: 'close' %}</button>
+  </div>
+  <ul class="menu-list" role="list">
+    {%- if menu.links.size > 0 -%}
+      {%- for link in menu.links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <details class="menu-list__group">
+              <summary>{{ link.title }} {% render 'icon', name: 'chevron' %}</summary>
+              <ul role="list">
+                <li><a href="{{ link.url }}">Tout voir</a></li>
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    {%- else -%}
+      <li><a href="{{ routes.collections_url }}/all">Shop all</a></li>
+      <li><a href="{{ routes.collections_url }}">Our collections</a></li>
+    {%- endif -%}
+    <li><a href="{{ settings.wishlist_url | default: '/pages/favoris' }}">Mes favoris <span class="count-badge count-badge--inline" data-wish-count hidden>0</span></a></li>
+  </ul>
+  <div class="drawer__foot">
+    <a href="{{ routes.account_url }}" class="link-ui">Mon compte</a>
+    <p class="script-note">Your style, your glow</p>
+  </div>
+</nav>

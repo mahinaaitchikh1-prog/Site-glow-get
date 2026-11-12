@@ -1,0 +1,41 @@
+<section class="section-space">
+  <div class="page-width">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">{{ order.created_at | date: '%d/%m/%Y' }}</p>
+      <h1 class="section-head__title">Commande {{ order.name }}</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    <p><a href="{{ routes.account_url }}" class="link-ui link-ui--underline">Retour à mon compte</a></p>
+    {%- if order.cancelled -%}<p class="form__error">Commande annulée le {{ order.cancelled_at | date: '%d/%m/%Y' }}.</p>{%- endif -%}
+    <table class="table">
+      <thead><tr><th>Article</th><th>Réf.</th><th>Prix</th><th>Qté</th><th>Total</th></tr></thead>
+      <tbody>
+        {%- for line in order.line_items -%}
+          <tr>
+            <td>{{ line.title | link_to: line.product.url }}
+              {%- if line.fulfillment -%}<br><small>Expédié le {{ line.fulfillment.created_at | date: '%d/%m/%Y' }}{% if line.fulfillment.tracking_url %} · <a href="{{ line.fulfillment.tracking_url }}">Suivre le colis</a>{% endif %}</small>{%- endif -%}
+            </td>
+            <td>{{ line.sku }}</td>
+            <td>{{ line.final_price | money }}</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="4">Sous-total</td><td>{{ order.line_items_subtotal_price | money }}</td></tr>
+        {%- for shipping_method in order.shipping_methods -%}
+          <tr><td colspan="4">Livraison ({{ shipping_method.title }})</td><td>{{ shipping_method.price | money }}</td></tr>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+          <tr><td colspan="4">{{ tax_line.title }} {{ tax_line.rate | times: 100 }} %</td><td>{{ tax_line.price | money }}</td></tr>
+        {%- endfor -%}
+        <tr><td colspan="4"><strong>Total</strong></td><td><strong>{{ order.total_price | money_with_currency }}</strong></td></tr>
+      </tfoot>
+    </table>
+    <div class="account-grid">
+      <div><h2 class="footer__heading">Adresse de facturation</h2>{{ order.billing_address | format_address }}</div>
+      <div><h2 class="footer__heading">Adresse de livraison</h2>{{ order.shipping_address | format_address }}</div>
+    </div>
+  </div>
+</section>

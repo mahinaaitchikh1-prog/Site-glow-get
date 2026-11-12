@@ -1,0 +1,72 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "GLOW&GET Maison",
+    "theme_version": "1.0.0",
+    "theme_author": "GLOW&GET",
+    "theme_documentation_url": "https://help.shopify.com/fr/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/fr"
+  },
+  {
+    "name": "Logo & identité",
+    "settings": [
+      { "type": "paragraph", "content": "Sans logo image, le logo typographique GLOW&GET (serif fine + esperluette cursive) est utilisé." },
+      { "type": "image_picker", "id": "logo", "label": "Logo image (facultatif)" },
+      { "type": "range", "id": "logo_width", "label": "Largeur du logo", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 180 },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "32 × 32 px, PNG" }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "color", "id": "color_bordeaux", "label": "Bordeaux (bandeaux, menus)", "default": "#5A1A2B" },
+      { "type": "color", "id": "color_bordeaux_deep", "label": "Bordeaux profond (pied de page)", "default": "#40101D" },
+      { "type": "color", "id": "color_rose", "label": "Rose poudré", "default": "#ECCDCB" },
+      { "type": "color", "id": "color_rose_light", "label": "Rose poudré clair", "default": "#F6E4E1" },
+      { "type": "color", "id": "color_pearl", "label": "Gris perle", "default": "#DCD8D5" },
+      { "type": "color", "id": "color_pearl_light", "label": "Gris perle clair (blocs photo)", "default": "#E8E5E2" },
+      { "type": "color", "id": "color_cream", "label": "Blanc crème (fonds)", "default": "#FBF6F0" },
+      { "type": "color", "id": "color_ink", "label": "Noir doux (textes, icônes)", "default": "#2B2326" }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      { "type": "range", "id": "page_width", "label": "Largeur maximale", "min": 1100, "max": 1800, "step": 20, "unit": "px", "default": 1480 },
+      {
+        "type": "select",
+        "id": "product_ratio",
+        "label": "Proportion des photos produits",
+        "options": [
+          { "value": "4 / 5", "label": "Portrait 4:5" },
+          { "value": "3 / 4", "label": "Portrait 3:4" },
+          { "value": "2 / 3", "label": "Portrait 2:3 (magazine)" }
+        ],
+        "default": "3 / 4"
+      }
+    ]
+  },
+  {
+    "name": "Panier & favoris",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Après un ajout au panier",
+        "options": [
+          { "value": "drawer", "label": "Ouvrir le panier latéral" },
+          { "value": "page", "label": "Aller à la page panier" }
+        ],
+        "default": "drawer"
+      },
+      { "type": "url", "id": "wishlist_url", "label": "Page Favoris", "info": "Créez une page « Favoris » avec le modèle page.wishlist, puis sélectionnez-la ici." }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "text", "id": "snapchat_handle", "label": "Identifiant Snapchat", "default": "glow.get" },
+      { "type": "text", "id": "tiktok_handle", "label": "Identifiant TikTok (sans @)", "default": "glow.get" }
+    ]
+  }
+]

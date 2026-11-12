@@ -1,0 +1,63 @@
+{%- assign menu = section.settings.menu -%}
+<header class="header{% if section.settings.sticky %} header--sticky{% endif %}" data-header>
+  <div class="header__inner page-width">
+    <div class="header__left">
+      <button type="button" class="icon-btn header__burger" data-open="menu" aria-controls="MenuDrawer" aria-expanded="false" aria-label="Ouvrir le menu">
+        {% render 'icon', name: 'menu' %}
+      </button>
+      <button type="button" class="icon-btn header__search-m" data-open="search" aria-controls="SearchPanel" aria-expanded="false" aria-label="Rechercher">
+        {% render 'icon', name: 'search' %}
+      </button>
+      <nav class="header__nav" aria-label="Navigation principale">
+        <ul role="list">
+          {%- for link in menu.links limit: 4 -%}
+            <li><a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a></li>
+          {%- else -%}
+            <li><a href="{{ routes.collections_url }}/all">Shop all</a></li>
+            <li><a href="{{ routes.collections_url }}">Collections</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="header__logo">
+      {%- if request.page_type == 'index' -%}<h1 class="header__logo-h">{%- endif -%}
+      {% render 'logo', size: 'header' %}
+      {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
+      {%- if section.settings.tagline != blank -%}
+        <span class="header__tagline">{{ section.settings.tagline }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="header__icons">
+      <button type="button" class="icon-btn header__search-d" data-open="search" aria-controls="SearchPanel" aria-expanded="false" aria-label="Rechercher">
+        {% render 'icon', name: 'search' %}
+      </button>
+      <a href="{{ routes.account_url }}" class="icon-btn header__account" aria-label="{% if customer %}Mon compte{% else %}Se connecter{% endif %}">
+        {% render 'icon', name: 'account' %}
+      </a>
+      <a href="{{ settings.wishlist_url | default: '/pages/favoris' }}" class="icon-btn" aria-label="Mes favoris">
+        {% render 'icon', name: 'heart' %}
+        <span class="count-badge" data-wish-count hidden>0</span>
+      </a>
+      <a href="{{ routes.cart_url }}" class="icon-btn" data-open="cart" aria-controls="CartDrawer" aria-label="Panier, {{ cart.item_count }} article(s)">
+        {% render 'icon', name: 'bag' %}
+        <span class="count-badge" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% render 'mobile-menu', menu: menu %}
+
+{% schema %}
+{
+  "name": "En-tête",
+  "class": "section-header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "text", "id": "tagline", "label": "Signature sous le logo", "default": "Your style, your glow" },
+    { "type": "checkbox", "id": "sticky", "label": "En-tête fixe au défilement", "default": true }
+  ]
+}
+{% endschema %}

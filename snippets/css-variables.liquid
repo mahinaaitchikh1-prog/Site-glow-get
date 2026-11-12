@@ -1,0 +1,23 @@
+{% style %}
+  :root {
+    --c-bordeaux: {{ settings.color_bordeaux }};
+    --c-bordeaux-deep: {{ settings.color_bordeaux_deep }};
+    --c-rose: {{ settings.color_rose }};
+    --c-rose-deep: {{ settings.color_bordeaux | color_mix: settings.color_rose, 45 }};
+    --c-rose-light: {{ settings.color_rose_light }};
+    --c-pearl: {{ settings.color_pearl }};
+    --c-pearl-light: {{ settings.color_pearl_light }};
+    --c-cream: {{ settings.color_cream }};
+    --c-ink: {{ settings.color_ink }};
+    --c-ink-soft: {{ settings.color_ink | color_mix: settings.color_cream, 70 }};
+    --c-line: {{ settings.color_ink | color_mix: settings.color_cream, 18 }};
+
+    --f-display: "Cormorant Garamond", "Cormorant", "Didot", "Bodoni 72", Georgia, serif;
+    --f-script: "Pinyon Script", "Snell Roundhand", "Apple Chancery", cursive;
+    --f-ui: "Jost", "Futura", "Century Gothic", "Helvetica Neue", Arial, sans-serif;
+
+    --page-width: {{ settings.page_width }}px;
+    --gutter: clamp(1rem, 3.2vw, 2.75rem);
+    --card-ratio: {{ settings.product_ratio }};
+  }
+{% endstyle %}

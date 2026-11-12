@@ -1,0 +1,152 @@
+{%- assign slides = section.blocks | where: 'type', 'slide' -%}
+<section
+  class="hero"
+  data-slider
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-speed="{{ section.settings.speed | times: 1000 }}"
+  aria-roledescription="carrousel"
+  aria-label="Campagne GLOW&amp;GET"
+>
+  <div class="hero__stage">
+    {%- for block in slides -%}
+      {%- liquid
+        assign layout = block.settings.layout
+        assign eager = 'lazy'
+        if forloop.first
+          assign eager = 'eager'
+        endif
+      -%}
+      <div
+        class="hero__slide hero__slide--{{ layout }} hero__slide--text-{{ block.settings.text_position }} hero__slide--ink-{{ block.settings.text_color }}{% if forloop.first %} is-active{% endif %}"
+        role="group"
+        aria-roledescription="diapositive"
+        aria-label="{{ forloop.index }} sur {{ slides.size }}"
+        data-slide
+        {% unless forloop.first %}aria-hidden="true"{% endunless %}
+        {{ block.shopify_attributes }}
+      >
+        <div class="hero__composition">
+          {%- case layout -%}
+            {%- when 'collage' -%}
+              {% render 'media-slot', image: block.settings.image_1, ratio: '4 / 5', label: 'Photo campagne principale', format: 'Portrait 4:5', sizes: '(min-width: 990px) 45vw, 90vw', loading: eager, class: 'hero__img hero__img--a' %}
+              {% render 'media-slot', image: block.settings.image_2, ratio: '3 / 4', label: 'Photo détail', format: 'Portrait 3:4', sizes: '(min-width: 990px) 26vw, 45vw', loading: eager, class: 'hero__img hero__img--b' %}
+              {% render 'media-slot', image: block.settings.image_3, ratio: '1 / 1', label: 'Photo silhouette', format: 'Carré 1:1', sizes: '(min-width: 990px) 22vw, 40vw', loading: eager, class: 'hero__img hero__img--c' %}
+              {% render 'ornament', type: 'bow', class: 'hero__bow' %}
+            {%- when 'diptych' -%}
+              {% render 'media-slot', image: block.settings.image_1, ratio: '2 / 3', label: 'Photo campagne gauche', format: 'Portrait 2:3', sizes: '(min-width: 750px) 50vw, 100vw', loading: eager, class: 'hero__img hero__img--a' %}
+              {% render 'media-slot', image: block.settings.image_2, ratio: '2 / 3', label: 'Photo campagne droite', format: 'Portrait 2:3', sizes: '(min-width: 750px) 50vw, 100vw', loading: eager, class: 'hero__img hero__img--b' %}
+            {%- else -%}
+              {%- assign mobile_img = block.settings.image_mobile | default: block.settings.image_1 -%}
+              {% render 'media-slot', image: block.settings.image_1, ratio: '16 / 9', label: 'Grande photo campagne', format: 'Paysage 16:9', sizes: '100vw', loading: eager, class: 'hero__img hero__img--a hero__img--desktop' %}
+              {% render 'media-slot', image: mobile_img, ratio: '4 / 5', label: 'Photo campagne mobile', format: 'Portrait 4:5', sizes: '100vw', loading: eager, class: 'hero__img hero__img--mobile' %}
+          {%- endcase -%}
+        </div>
+
+        <div class="hero__copy">
+          {%- if block.settings.kicker != blank -%}
+            <p class="hero__kicker">{{ block.settings.kicker }}</p>
+          {%- endif -%}
+          {%- if block.settings.show_wordmark -%}
+            <p class="hero__title">{% render 'logo', size: 'hero' %}</p>
+          {%- elsif block.settings.title != blank -%}
+            <p class="hero__title hero__title--text">{{ block.settings.title }}</p>
+          {%- endif -%}
+          {%- if block.settings.slogan != blank -%}
+            <p class="hero__slogan">{{ block.settings.slogan }}</p>
+          {%- endif -%}
+          {%- if block.settings.button_label != blank -%}
+            <a href="{{ block.settings.button_link | default: routes.all_products_collection_url }}" class="btn btn--solid hero__cta">{{ block.settings.button_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if slides.size > 1 -%}
+    <div class="hero__controls page-width">
+      <button type="button" class="hero__arrow" data-prev aria-label="Diapositive précédente">{% render 'icon', name: 'arrow-left' %}</button>
+      <div class="hero__dots">
+        {%- for block in slides -%}
+          <button type="button" class="hero__dot{% if forloop.first %} is-active{% endif %}" data-dot="{{ forloop.index0 }}" aria-label="Diapositive {{ forloop.index }}"{% if forloop.first %} aria-current="true"{% endif %}></button>
+        {%- endfor -%}
+      </div>
+      <button type="button" class="hero__arrow" data-next aria-label="Diapositive suivante">{% render 'icon', name: 'arrow-right' %}</button>
+      {%- if section.settings.autoplay -%}
+        <button type="button" class="hero__pause" data-pause aria-label="Mettre en pause le défilement">Pause</button>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Campagne photo (slider)",
+  "class": "section-hero",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "checkbox", "id": "autoplay", "label": "Défilement automatique", "default": true },
+    { "type": "range", "id": "speed", "label": "Durée de chaque diapositive", "min": 4, "max": 12, "step": 1, "unit": "s", "default": 7 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Diapositive",
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Composition",
+          "options": [
+            { "value": "collage", "label": "Collage asymétrique (3 photos)" },
+            { "value": "diptych", "label": "Diptyque (2 photos portrait)" },
+            { "value": "full", "label": "Pleine page (1 photo paysage)" }
+          ],
+          "default": "collage"
+        },
+        { "type": "image_picker", "id": "image_1", "label": "Photo 1 (principale)" },
+        { "type": "image_picker", "id": "image_2", "label": "Photo 2", "info": "Collage et diptyque" },
+        { "type": "image_picker", "id": "image_3", "label": "Photo 3", "info": "Collage uniquement" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Photo mobile (pleine page)", "info": "Format portrait recommandé pour les téléphones" },
+        { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "la nouvelle collection" },
+        { "type": "checkbox", "id": "show_wordmark", "label": "Afficher le logo GLOW&GET en grand", "default": true },
+        { "type": "text", "id": "title", "label": "Titre (si le logo n'est pas affiché)" },
+        { "type": "text", "id": "slogan", "label": "Slogan", "default": "YOUR STYLE, YOUR GLOW" },
+        { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Découvrir la collection" },
+        { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Position du texte",
+          "options": [
+            { "value": "center", "label": "Centre" },
+            { "value": "left", "label": "Gauche" },
+            { "value": "right", "label": "Droite" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Couleur du texte",
+          "info": "Choisissez la couleur la plus lisible sur vos photos.",
+          "options": [
+            { "value": "bordeaux", "label": "Bordeaux" },
+            { "value": "cream", "label": "Crème" },
+            { "value": "ink", "label": "Noir doux" }
+          ],
+          "default": "bordeaux"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Campagne photo (slider)",
+      "blocks": [
+        { "type": "slide", "settings": { "layout": "collage" } },
+        { "type": "slide", "settings": { "layout": "diptych", "kicker": "the new edit" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,110 @@
+{%- paginate collection.products by section.settings.per_page -%}
+  <section class="coll-hero bg-pearl">
+    <div class="coll-hero__inner page-width">
+      <div class="coll-hero__text">
+        <p class="coll-hero__kicker">{{ section.settings.kicker }}</p>
+        <h1 class="coll-hero__title">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="coll-hero__desc rte">{{ collection.description }}</div>
+        {%- endif -%}
+        <p class="coll-hero__count">{{ collection.products_count }} pièce{% if collection.products_count > 1 %}s{% endif %}</p>
+      </div>
+      <div class="coll-hero__media">
+        {% render 'media-slot', image: collection.image, ratio: '16 / 9', label: 'Bannière de la collection', format: 'Paysage 16:9', sizes: '(min-width: 990px) 60vw, 100vw', loading: 'eager' %}
+      </div>
+    </div>
+  </section>
+
+  <section class="coll section-space">
+    <div class="page-width">
+      <div class="coll__bar">
+        <p class="coll__bar-count">
+          {%- if paginate.pages > 1 -%}Page {{ paginate.current_page }} sur {{ paginate.pages }}{%- endif -%}
+        </p>
+        <form class="coll__sort" method="get" data-sort-form>
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+            {%- endfor -%}
+          {%- endfor -%}
+          <label for="SortBy">Trier par</label>
+          <select name="sort_by" id="SortBy" onchange="this.form.submit()">
+            {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+          <noscript><button type="submit" class="btn btn--line">Trier</button></noscript>
+        </form>
+      </div>
+
+      {%- if collection.filters.size > 0 -%}
+        <form class="filters" method="get" data-filter-form>
+          <input type="hidden" name="sort_by" value="{{ sort_by }}">
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == 'list' -%}
+              <details class="filters__group">
+                <summary>{{ filter.label }}{% if filter.active_values.size > 0 %} ({{ filter.active_values.size }}){% endif %} {% render 'icon', name: 'chevron' %}</summary>
+                <div class="filters__values">
+                  {%- for value in filter.values -%}
+                    <label class="chip{% if value.count == 0 and value.active == false %} chip--off{% endif %}">
+                      <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %} onchange="this.form.submit()">
+                      <span>{{ value.label }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- assign has_active = false -%}
+          {%- for filter in collection.filters -%}{%- if filter.active_values.size > 0 -%}{%- assign has_active = true -%}{%- endif -%}{%- endfor -%}
+          {%- if has_active -%}
+            <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="link-ui link-ui--underline">Effacer les filtres</a>
+          {%- endif -%}
+          <noscript><button type="submit" class="btn btn--line">Filtrer</button></noscript>
+        </form>
+      {%- endif -%}
+
+      <div class="grid grid--products grid--editorial" style="--cols: {{ section.settings.columns }};">
+        {%- for product in collection.products -%}
+          {% render 'product-card', card_product: product %}
+        {%- else -%}
+          {%- if collection.all_products_count == 0 -%}
+            {%- for i in (1..8) -%}
+              {% render 'product-card', index: i %}
+            {%- endfor -%}
+          {%- else -%}
+            <p class="empty-note">Aucun article ne correspond à ces filtres. <a href="{{ collection.url }}">Effacer les filtres</a></p>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pager" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" class="pager__arrow" aria-label="Page précédente">{% render 'icon', name: 'arrow-left' %}</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="pager__num">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="pager__num is-current" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="pager__num">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}" class="pager__arrow" aria-label="Page suivante">{% render 'icon', name: 'arrow-right' %}</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Page collection",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "la collection" },
+    { "type": "range", "id": "per_page", "label": "Articles par page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "range", "id": "columns", "label": "Articles par ligne (ordinateur)", "min": 2, "max": 4, "step": 1, "default": 3 }
+  ]
+}
+{% endschema %}

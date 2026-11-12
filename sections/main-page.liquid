@@ -1,0 +1,13 @@
+<section class="section-space">
+  <div class="page-width page-width--narrow">
+    <header class="section-head section-head--center">
+      <h1 class="section-head__title">{{ page.title }}</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    <div class="rte">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page", "settings": [] }
+{% endschema %}

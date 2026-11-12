@@ -1,0 +1,73 @@
+{%- liquid
+  assign coll = section.settings.collection
+  assign link = section.settings.link | default: coll.url | default: routes.all_products_collection_url
+  assign main_image = section.settings.image_1 | default: coll.featured_image
+-%}
+<section class="spread spread--{{ section.settings.composition }} bg-{{ section.settings.background }}" {{ section.shopify_attributes }}>
+  <div class="spread__inner page-width">
+    <div class="spread__main">
+      {% render 'media-slot', image: main_image, ratio: '4 / 5', label: 'Photo collection principale', format: 'Portrait 4:5', sizes: '(min-width: 990px) 50vw, 100vw' %}
+    </div>
+
+    <div class="spread__text">
+      {%- if section.settings.kicker != blank -%}
+        <p class="spread__kicker">{{ section.settings.kicker }}</p>
+      {%- endif -%}
+      <h2 class="spread__title">{{ section.settings.title }}</h2>
+      {% render 'ornament', type: 'bow', class: 'spread__bow' %}
+      {%- if section.settings.text != blank -%}
+        <div class="spread__body">{{ section.settings.text }}</div>
+      {%- endif -%}
+      <a href="{{ link }}" class="btn btn--line">{{ section.settings.button_label }}</a>
+      {%- if section.settings.caption != blank -%}
+        <p class="spread__caption">{{ section.settings.caption }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="spread__side">
+      {% render 'media-slot', image: section.settings.image_2, ratio: '3 / 4', label: 'Photo détail', format: 'Portrait 3:4', sizes: '(min-width: 990px) 22vw, 50vw', class: 'spread__img-b' %}
+      {% render 'media-slot', image: section.settings.image_3, ratio: '1 / 1', label: 'Photo accessoire', format: 'Carré 1:1', sizes: '(min-width: 990px) 18vw, 40vw', class: 'spread__img-c' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection éditoriale",
+  "class": "section-spread",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "l'édito de la saison" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "THE NEW EDIT" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Des pièces pensées comme des souvenirs : soie lavée, rubans noués, silhouettes qui bougent avec vous.</p>" },
+    { "type": "collection", "id": "collection", "label": "Collection liée" },
+    { "type": "url", "id": "link", "label": "Lien personnalisé (facultatif)" },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Découvrir l'édito" },
+    { "type": "text", "id": "caption", "label": "Légende de magazine", "default": "Photographié pour GLOW&GET" },
+    { "type": "image_picker", "id": "image_1", "label": "Grande photo", "info": "Si vide, l'image de la collection est utilisée." },
+    { "type": "image_picker", "id": "image_2", "label": "Photo secondaire" },
+    { "type": "image_picker", "id": "image_3", "label": "Petite photo" },
+    {
+      "type": "select",
+      "id": "composition",
+      "label": "Composition",
+      "options": [
+        { "value": "left", "label": "Grande photo à gauche" },
+        { "value": "right", "label": "Grande photo à droite" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "pearl", "label": "Gris perle" },
+        { "value": "cream", "label": "Crème" },
+        { "value": "rose", "label": "Rose poudré" }
+      ],
+      "default": "pearl"
+    }
+  ],
+  "presets": [{ "name": "Collection éditoriale" }]
+}
+{% endschema %}

@@ -1,0 +1,17 @@
+{%- comment -%}
+  Logo typographique GLOW&GET (ou logo image si défini dans les réglages).
+  size : 'header' | 'hero' | 'footer'
+{%- endcomment -%}
+{%- if settings.logo != blank and size != 'hero' -%}
+  {%- assign logo_w = settings.logo_width | default: 180 -%}
+  {%- assign logo_style = 'max-width: ' | append: logo_w | append: 'px' -%}
+  {{
+    settings.logo
+    | image_url: width: 600
+    | image_tag: class: 'logo-img', alt: shop.name, style: logo_style
+  }}
+{%- else -%}
+  <span class="wordmark wordmark--{{ size | default: 'header' }}" aria-label="GLOW&amp;GET">
+    <span class="wordmark__word" aria-hidden="true">Glow</span><span class="wordmark__amp" aria-hidden="true">&amp;</span><span class="wordmark__word" aria-hidden="true">Get</span>
+  </span>
+{%- endif -%}

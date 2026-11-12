@@ -1,0 +1,40 @@
+<section class="section-space">
+  <div class="page-width account-narrow">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">bon retour</p>
+      <h1 class="section-head__title">Connexion</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+
+    <div id="LoginBox">
+      {%- form 'customer_login', class: 'form' -%}
+        {%- if form.errors -%}<div class="form__error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <label class="field"><span>E-mail</span><input type="email" name="customer[email]" autocomplete="email" required></label>
+        {%- if form.password_needed -%}
+          <label class="field"><span>Mot de passe</span><input type="password" name="customer[password]" autocomplete="current-password" required></label>
+          <a href="#recover" class="link-ui link-ui--underline" data-toggle-recover>Mot de passe oublié ?</a>
+        {%- endif -%}
+        <button type="submit" class="btn btn--solid btn--wide">Se connecter</button>
+        <p class="form__alt">Pas encore de compte ? <a href="{{ routes.account_register_url }}" class="link-ui link-ui--underline">Créer un compte</a></p>
+      {%- endform -%}
+    </div>
+
+    <div id="recover" class="account-recover">
+      <h2 class="footer__heading">Réinitialiser le mot de passe</h2>
+      {%- form 'recover_customer_password', class: 'form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form__success" role="status">Un e-mail de réinitialisation vient de vous être envoyé.</p>
+        {%- endif -%}
+        {%- if form.errors -%}<div class="form__error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+        <label class="field"><span>E-mail</span><input type="email" name="email" autocomplete="email" required></label>
+        <button type="submit" class="btn btn--line">Recevoir le lien</button>
+      {%- endform -%}
+    </div>
+
+    {%- if shop.checkout.guest_login -%}
+      {%- form 'guest_login', class: 'form' -%}
+        <button type="submit" class="btn btn--line btn--wide">Continuer en tant qu'invité</button>
+      {%- endform -%}
+    {%- endif -%}
+  </div>
+</section>

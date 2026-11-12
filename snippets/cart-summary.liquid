@@ -1,0 +1,25 @@
+{%- if cart.item_count > 0 -%}
+  <div class="cart-summary">
+    {%- if cart.cart_level_discount_applications.size > 0 -%}
+      <ul class="cart-summary__discounts" role="list">
+        {%- for discount in cart.cart_level_discount_applications -%}
+          <li><span>{{ discount.title }}</span><span>-{{ discount.total_allocated_amount | money }}</span></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <p class="cart-summary__total">
+      <span>Total</span>
+      <span data-cart-total>{{ cart.total_price | money_with_currency }}</span>
+    </p>
+    <p class="cart-summary__note">Taxes incluses. Frais de livraison calculés à l'étape suivante.</p>
+    <form action="{{ routes.cart_url }}" method="post" class="cart-summary__form">
+      <button type="submit" name="checkout" class="btn btn--solid btn--wide">Valider ma commande</button>
+    </form>
+    <p class="cart-summary__secure">
+      Paiement sécurisé : carte bancaire, Apple Pay, PayPal et paiement en plusieurs fois selon les options activées.
+    </p>
+    {%- if context == 'drawer' -%}
+      <a href="{{ routes.cart_url }}" class="link-ui link-ui--underline cart-summary__view">Voir le panier détaillé</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

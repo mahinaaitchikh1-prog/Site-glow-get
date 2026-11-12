@@ -1,0 +1,28 @@
+<section class="cart-page section-space">
+  <div class="page-width" data-cart-section="{{ section.id }}">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">votre sélection</p>
+      <h1 class="section-head__title">Mon panier</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    <div class="cart-page__layout{% if cart.item_count == 0 %} cart-page__layout--empty{% endif %}">
+      <div class="cart-page__lines">
+        {% render 'cart-lines', context: 'page' %}
+      </div>
+      {%- if cart.item_count > 0 -%}
+        <aside class="cart-page__aside">
+          <h2 class="cart-page__aside-title">Récapitulatif</h2>
+          {% render 'cart-summary', context: 'page' %}
+        </aside>
+      {%- endif -%}
+    </div>
+    <span hidden data-cart-count-source>{{ cart.item_count }}</span>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Panier",
+  "settings": []
+}
+{% endschema %}

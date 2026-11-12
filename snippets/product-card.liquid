@@ -1,0 +1,100 @@
+{%- comment -%}
+  Carte produit éditoriale.
+  - card_product : objet produit (si vide, carte réservée en attente de vos articles)
+  - index : numéro de la carte réservée
+  - sizes : attribut sizes pour l'image
+{%- endcomment -%}
+{%- assign card_sizes = sizes | default: '(min-width: 1200px) 25vw, (min-width: 750px) 33vw, 50vw' -%}
+
+{%- if card_product != blank -%}
+  {%- liquid
+    assign variant = card_product.selected_or_first_available_variant
+    assign second_image = card_product.media[1].preview_image
+    assign single_variant = card_product.has_only_default_variant
+    assign on_sale = false
+    if card_product.compare_at_price > card_product.price
+      assign on_sale = true
+    endif
+  -%}
+  <article class="card" data-product-card data-handle="{{ card_product.handle }}">
+    <div class="card__media">
+      <a href="{{ card_product.url }}" class="card__link" tabindex="-1" aria-hidden="true">
+        {% render 'media-slot',
+          image: card_product.featured_media.preview_image,
+          ratio: settings.product_ratio,
+          label: 'Photo article',
+          format: 'Portrait',
+          sizes: card_sizes,
+          alt: card_product.title,
+          class: 'card__slot'
+        %}
+        {%- if second_image != blank -%}
+          <span class="card__alt">
+            {{ second_image | image_url: width: 1200 | image_tag: widths: '360, 540, 720, 960, 1200', sizes: card_sizes, loading: 'lazy', alt: '' }}
+          </span>
+        {%- endif -%}
+      </a>
+
+      {%- if card_product.available == false -%}
+        <span class="card__badge card__badge--soldout">Épuisé</span>
+      {%- elsif on_sale -%}
+        <span class="card__badge">Prix doux</span>
+      {%- elsif card_product.tags contains 'nouveau' or card_product.tags contains 'new' -%}
+        <span class="card__badge card__badge--script">nouveauté</span>
+      {%- endif -%}
+
+      {% render 'wishlist-button', product: card_product, class: 'card__heart' %}
+    </div>
+
+    <div class="card__info">
+      <h3 class="card__title"><a href="{{ card_product.url }}">{{ card_product.title }}</a></h3>
+      <p class="card__price">
+        {% render 'price', product: card_product %}
+      </p>
+      <p class="card__sku">Réf. <span data-card-sku>{{ variant.sku | default: '—' }}</span></p>
+
+      {%- if card_product.available -%}
+        {%- form 'product', card_product, class: 'card__form', data-quick-add: '', novalidate: 'novalidate' -%}
+          {%- if single_variant -%}
+            <input type="hidden" name="id" value="{{ variant.id }}">
+          {%- else -%}
+            <fieldset class="card__sizes">
+              <legend class="visually-hidden">{{ card_product.options.first | default: 'Taille' }}</legend>
+              {%- for v in card_product.variants limit: 8 -%}
+                <label class="chip{% unless v.available %} chip--off{% endunless %}">
+                  <input
+                    type="radio"
+                    name="id"
+                    value="{{ v.id }}"
+                    data-sku="{{ v.sku | escape }}"
+                    {% unless v.available %}disabled{% endunless %}
+                  >
+                  <span>{{ v.title }}</span>
+                </label>
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="btn btn--line card__add">
+            <span>Ajouter au panier</span>
+          </button>
+        {%- endform -%}
+      {%- else -%}
+        <a href="{{ card_product.url }}" class="btn btn--line card__add">Voir l'article</a>
+      {%- endif -%}
+    </div>
+  </article>
+{%- else -%}
+  <article class="card card--placeholder" aria-label="Emplacement produit réservé">
+    <div class="card__media">
+      {% render 'media-slot', ratio: settings.product_ratio, label: 'Photo article', format: 'Portrait' %}
+      <span class="card__heart wish wish--static" aria-hidden="true">{% render 'icon', name: 'heart' %}</span>
+    </div>
+    <div class="card__info">
+      <h3 class="card__title">Nom de l'article</h3>
+      <p class="card__price"><span class="price">00,00 €</span></p>
+      <p class="card__sku">Réf. GG-{{ index | default: 1 | prepend: '000' | slice: -4, 4 }}</p>
+      <span class="btn btn--line card__add is-disabled" aria-disabled="true">Ajouter au panier</span>
+    </div>
+  </article>
+{%- endif -%}

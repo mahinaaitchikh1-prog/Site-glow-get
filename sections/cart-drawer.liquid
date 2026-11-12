@@ -1,0 +1,22 @@
+<aside class="drawer drawer--right cart-drawer" id="CartDrawer" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle" data-panel="cart" hidden>
+  <div class="cart-drawer__content" data-cart-section="{{ section.id }}">
+    <div class="drawer__head">
+      <h2 class="drawer__title" id="CartDrawerTitle">Mon panier <span class="drawer__count">({{ cart.item_count }})</span></h2>
+      <button type="button" class="icon-btn" data-close aria-label="Fermer le panier">{% render 'icon', name: 'close' %}</button>
+    </div>
+    <div class="drawer__body">
+      {% render 'cart-lines', context: 'drawer' %}
+    </div>
+    <div class="drawer__foot">
+      {% render 'cart-summary', context: 'drawer' %}
+    </div>
+    <span hidden data-cart-count-source>{{ cart.item_count }}</span>
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "Tiroir panier",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{
+  "type": "header",
+  "name": "En-tête",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "msg-1": { "type": "message", "settings": { "text": "Livraison offerte en France dès 80 €", "link": "" } },
+        "msg-2": { "type": "message", "settings": { "text": "La nouvelle collection est arrivée", "link": "" } },
+        "msg-3": { "type": "message", "settings": { "text": "Retours gratuits sous 30 jours", "link": "" } }
+      },
+      "block_order": ["msg-1", "msg-2", "msg-3"],
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": { "menu": "main-menu", "tagline": "Your style, your glow", "sticky": true }
+    }
+  },
+  "order": ["announcement", "header"]
+}

@@ -1,0 +1,60 @@
+<section class="club" id="newsletter" {{ section.shopify_attributes }}>
+  {% render 'ornament', type: 'bow', class: 'club__bow' %}
+  <div class="club__inner page-width">
+    <p class="club__kicker">{{ section.settings.kicker }}</p>
+    <h2 class="club__title">{{ section.settings.title }}</h2>
+    <div class="club__text">{{ section.settings.text }}</div>
+
+    {%- form 'customer', id: 'ClubForm', class: 'club__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter, club glow&get">
+      {%- if form.posted_successfully? -%}
+        <p class="club__success" role="status" tabindex="-1" autofocus>
+          {% render 'ornament', type: 'star', class: 'club__star' %}
+          Bienvenue dans le club. Votre inscription est confirmée.
+        </p>
+      {%- else -%}
+        <div class="club__field">
+          <label for="ClubEmail" class="visually-hidden">Adresse e-mail</label>
+          <input
+            id="ClubEmail"
+            type="email"
+            name="contact[email]"
+            class="club__input"
+            value="{{ form.email }}"
+            placeholder="Votre adresse e-mail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            {% if form.errors %}aria-invalid="true" aria-describedby="ClubError"{% endif %}
+          >
+          <button type="submit" class="btn btn--solid club__btn">SUBSCRIBE</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="club__error" id="ClubError" role="alert">
+            {%- if form.errors.messages['email'] -%}
+              Cette adresse e-mail n'est pas valide. Vérifiez-la puis réessayez.
+            {%- else -%}
+              {{ form.errors | default_errors }}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+        <p class="club__legal">{{ section.settings.legal }}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "class": "section-club",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "entre nous" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "JOIN THE GLOW&GET CLUB" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Soyez le premier à découvrir nos nouvelles collections, nos pièces exclusives et nos offres spéciales.</p>" },
+    { "type": "text", "id": "legal", "label": "Mention légale", "default": "En vous inscrivant, vous acceptez de recevoir nos e-mails. Désinscription possible à tout moment." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

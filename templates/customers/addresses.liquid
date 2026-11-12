@@ -1,0 +1,38 @@
+{%- paginate customer.addresses by 10 -%}
+<section class="section-space">
+  <div class="page-width account-narrow">
+    <header class="section-head section-head--center">
+      <h1 class="section-head__title">Mes adresses</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    <p><a href="{{ routes.account_url }}" class="link-ui link-ui--underline">Retour à mon compte</a></p>
+
+    {%- for address in customer.addresses -%}
+      <div class="address-card">
+        {%- if address == customer.default_address -%}<p class="section-head__kicker">adresse par défaut</p>{%- endif -%}
+        {{ address | format_address }}
+        <details>
+          <summary class="link-ui link-ui--underline">Modifier</summary>
+          {%- form 'customer_address', address, class: 'form' -%}
+            {% render 'address-fields', form: form, address: address %}
+            <button type="submit" class="btn btn--solid">Enregistrer</button>
+          {%- endform -%}
+        </details>
+        <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}">
+          <input type="hidden" name="_method" value="delete">
+          <button type="submit" class="link-ui link-ui--underline" onclick="return confirm('Supprimer cette adresse ?')">Supprimer</button>
+        </form>
+      </div>
+    {%- endfor -%}
+
+    <details class="address-card" {% unless customer.addresses_count > 0 %}open{% endunless %}>
+      <summary class="btn btn--line">Ajouter une adresse</summary>
+      {%- form 'customer_address', customer.new_address, class: 'form' -%}
+        {% render 'address-fields', form: form, address: customer.new_address %}
+        <button type="submit" class="btn btn--solid">Ajouter l'adresse</button>
+      {%- endform -%}
+    </details>
+    {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
+  </div>
+</section>
+{%- endpaginate -%}

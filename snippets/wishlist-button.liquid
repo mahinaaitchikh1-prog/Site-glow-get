@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="wish {{ class }}"
+  data-wish="{{ product.handle }}"
+  aria-pressed="false"
+  aria-label="Ajouter {{ product.title | escape }} à vos favoris"
+  data-label-add="Ajouter {{ product.title | escape }} à vos favoris"
+  data-label-remove="Retirer {{ product.title | escape }} de vos favoris"
+>
+  {% render 'icon', name: 'heart' %}
+</button>

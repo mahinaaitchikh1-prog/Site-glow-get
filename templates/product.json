@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "care": { "type": "accordion", "settings": { "heading": "Composition & entretien", "content": "<p>Renseignez la composition et les conseils d'entretien dans la description ou via une page dédiée.</p>" } },
+        "shipping": { "type": "accordion", "settings": { "heading": "Livraison & retours", "content": "<p>Livraison en France métropolitaine sous 2 à 4 jours ouvrés. Retours gratuits sous 30 jours.</p>" } }
+      },
+      "block_order": ["care", "shipping"],
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

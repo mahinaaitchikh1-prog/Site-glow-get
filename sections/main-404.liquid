@@ -1,0 +1,12 @@
+<section class="section-space">
+  <div class="page-width page-width--narrow cart-empty">
+    {% render 'ornament', type: 'bow', class: 'cart-empty__bow' %}
+    <h1 class="section-head__title">Page introuvable</h1>
+    <p class="cart-empty__text">Cette page n'existe pas ou a été déplacée.</p>
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn--solid">Retour à la boutique</a>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page 404", "settings": [] }
+{% endschema %}

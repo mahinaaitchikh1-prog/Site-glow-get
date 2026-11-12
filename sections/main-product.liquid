@@ -1,0 +1,214 @@
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign low_stock = section.settings.low_stock_threshold
+  assign first_collection = product.collections.first
+-%}
+<section class="pdp" data-product data-section="{{ section.id }}" data-url="{{ product.url }}">
+  <div class="pdp__inner page-width">
+
+    <div class="pdp__gallery" data-gallery>
+      <ul class="pdp__media-list" role="list" data-gallery-track>
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <li class="pdp__media{% if forloop.first %} pdp__media--lead{% endif %}" data-media-id="{{ media.id }}">
+              {%- case media.media_type -%}
+                {%- when 'video' -%}
+                  <div class="slot" style="--ratio: {{ settings.product_ratio }};">
+                    {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'slot__img', image_size: '1200x' }}
+                  </div>
+                {%- when 'external_video' -%}
+                  <div class="slot" style="--ratio: 16 / 9;">
+                    {{ media | external_video_tag: class: 'slot__img' }}
+                  </div>
+                {%- else -%}
+                  {%- liquid
+                    if forloop.first
+                      assign load = 'eager'
+                    else
+                      assign load = 'lazy'
+                    endif
+                  -%}
+                  {% render 'media-slot', image: media.preview_image, ratio: settings.product_ratio, sizes: '(min-width: 990px) 30vw, 100vw', loading: load, alt: product.title %}
+              {%- endcase -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- assign placeholder_labels = 'Photo principale,Vue de dos,Photo détail,Photo portée' | split: ',' -%}
+          {%- for label in placeholder_labels -%}
+            <li class="pdp__media{% if forloop.first %} pdp__media--lead{% endif %}">
+              {% render 'media-slot', ratio: settings.product_ratio, label: label, format: 'Portrait' %}
+            </li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+      <div class="pdp__dots" aria-hidden="true" data-gallery-dots></div>
+    </div>
+
+    <div class="pdp__info">
+      <div class="pdp__sticky">
+        <nav class="crumbs" aria-label="Fil d'Ariane">
+          <a href="{{ routes.root_url }}">Accueil</a>
+          {%- if first_collection -%}
+            <span aria-hidden="true">/</span> <a href="{{ first_collection.url }}">{{ first_collection.title }}</a>
+          {%- endif -%}
+        </nav>
+
+        {%- if section.settings.kicker != blank -%}
+          <p class="pdp__kicker">{{ section.settings.kicker }}</p>
+        {%- endif -%}
+        <h1 class="pdp__title">{{ product.title }}</h1>
+
+        <div class="pdp__price" data-pdp-price>
+          {% render 'price', product: product, variant: current, use_variant: true %}
+        </div>
+        <p class="pdp__sku">Réf. <span data-pdp-sku>{{ current.sku | default: '—' }}</span></p>
+
+        {%- form 'product', product, class: 'pdp__form', data-product-form: '', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              <fieldset class="opt" data-option-index="{{ forloop.index0 }}">
+                <legend class="opt__legend">{{ option.name }} <span class="opt__value" data-option-value>{{ option.selected_value }}</span></legend>
+                <div class="opt__values">
+                  {%- for value in option.values -%}
+                    <label class="chip chip--lg">
+                      <input
+                        type="radio"
+                        name="option-{{ forloop.parentloop.index0 }}"
+                        value="{{ value | escape }}"
+                        {% if option.selected_value == value %}checked{% endif %}
+                      >
+                      <span>{{ value }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endfor -%}
+            {%- if section.settings.size_guide_page != blank -%}
+              <details class="pdp__guide">
+                <summary class="link-ui link-ui--underline">Guide des tailles</summary>
+                <div class="rte">{{ section.settings.size_guide_page.content }}</div>
+              </details>
+            {%- endif -%}
+          {%- endunless -%}
+
+          <p class="pdp__stock" data-stock aria-live="polite">
+            {%- if current.available == false -%}
+              <span class="stock stock--out">Épuisé</span>
+            {%- elsif current.inventory_management == 'shopify' and current.inventory_quantity > 0 and current.inventory_quantity <= low_stock -%}
+              <span class="stock stock--low">Plus que {{ current.inventory_quantity }} pièce(s)</span>
+            {%- else -%}
+              <span class="stock stock--in">En stock</span>
+            {%- endif -%}
+          </p>
+
+          <div class="pdp__buy">
+            <div class="qty qty--lg">
+              <button type="button" class="qty__btn" data-qty-step="-1" aria-label="Diminuer la quantité">{% render 'icon', name: 'minus' %}</button>
+              <input type="number" name="quantity" value="1" min="1" class="qty__input" aria-label="Quantité" data-qty-input>
+              <button type="button" class="qty__btn" data-qty-step="1" aria-label="Augmenter la quantité">{% render 'icon', name: 'plus' %}</button>
+            </div>
+            <button type="submit" class="btn btn--solid btn--grow" data-add-button {% unless current.available %}disabled{% endunless %}>
+              <span data-add-label>{% if current.available %}Ajouter au panier{% else %}Épuisé{% endif %}</span>
+            </button>
+            {% render 'wishlist-button', product: product, class: 'wish--boxed' %}
+          </div>
+          {%- if section.settings.show_dynamic_checkout -%}
+            <div class="pdp__express">{{ form | payment_button }}</div>
+          {%- endif -%}
+          <p class="pdp__error" role="alert" data-form-error hidden></p>
+        {%- endform -%}
+
+        <div class="pdp__details">
+          {%- if product.description != blank -%}
+            <details class="acc" open>
+              <summary>Description {% render 'icon', name: 'chevron' %}</summary>
+              <div class="rte">{{ product.description }}</div>
+            </details>
+          {%- endif -%}
+          {%- for block in section.blocks -%}
+            <details class="acc" {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.heading }} {% render 'icon', name: 'chevron' %}</summary>
+              <div class="rte">
+                {{ block.settings.content }}
+                {%- if block.settings.page != blank -%}{{ block.settings.page.content }}{%- endif -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+
+        {% render 'ornament', type: 'sprig', class: 'pdp__sprig' %}
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-product-json>
+    {
+      "options": {{ product.options | json }},
+      "variants": [
+        {%- for v in product.variants -%}
+          {
+            "id": {{ v.id }},
+            "options": {{ v.options | json }},
+            "available": {{ v.available | json }},
+            "sku": {{ v.sku | json }},
+            "price": {{ v.price | money | json }},
+            "compare": {% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},
+            "tracked": {% if v.inventory_management == 'shopify' %}true{% else %}false{% endif %},
+            "qty": {{ v.inventory_quantity | default: 0 }},
+            "media": {% if v.featured_media %}{{ v.featured_media.id }}{% else %}null{% endif %}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      "lowStock": {{ low_stock }}
+    }
+  </script>
+</section>
+
+{%- if section.settings.show_related and product.collections.size > 0 -%}
+  {%- assign related_coll = product.collections.first -%}
+  <section class="shelf section-space bg-pearl">
+    <div class="page-width">
+      <header class="section-head section-head--center">
+        <p class="section-head__kicker">à porter avec</p>
+        <h2 class="section-head__title">COMPLETE THE LOOK</h2>
+        {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+      </header>
+      <div class="grid grid--products" style="--cols: 4;">
+        {%- assign shown = 0 -%}
+        {%- for p in related_coll.products -%}
+          {%- if p.id != product.id and shown < 4 -%}
+            {% render 'product-card', card_product: p %}
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "class": "section-pdp",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif au-dessus du nom", "default": "glow&get" },
+    { "type": "range", "id": "low_stock_threshold", "label": "Seuil « plus que X pièces »", "min": 1, "max": 10, "step": 1, "default": 3 },
+    { "type": "page", "id": "size_guide_page", "label": "Page guide des tailles" },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Boutons de paiement express (Apple Pay, PayPal…)", "default": true },
+    { "type": "checkbox", "id": "show_related", "label": "Afficher « Complete the look »", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Onglet d'information",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Titre", "default": "Composition & entretien" },
+        { "type": "richtext", "id": "content", "label": "Contenu" },
+        { "type": "page", "id": "page", "label": "Contenu d'une page (facultatif)" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,43 @@
+<section class="section-space">
+  <div class="page-width">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">bonjour {{ customer.first_name }}</p>
+      <h1 class="section-head__title">Mon compte</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    <div class="account-grid">
+      <div>
+        <h2 class="footer__heading">Mes commandes</h2>
+        {%- paginate customer.orders by 20 -%}
+          {%- if customer.orders.size > 0 -%}
+            <table class="table">
+              <thead><tr><th>Commande</th><th>Date</th><th>Paiement</th><th>Livraison</th><th>Total</th></tr></thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | date: '%d/%m/%Y' }}</td>
+                    <td>{{ order.financial_status_label }}</td>
+                    <td>{{ order.fulfillment_status_label }}</td>
+                    <td>{{ order.total_price | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          {%- else -%}
+            <p>Vous n'avez pas encore passé de commande.</p>
+          {%- endif -%}
+          {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
+        {%- endpaginate -%}
+      </div>
+      <aside>
+        <h2 class="footer__heading">Mes informations</h2>
+        <p>{{ customer.name }}<br>{{ customer.email }}</p>
+        {{ customer.default_address | format_address }}
+        <p><a href="{{ routes.account_addresses_url }}" class="link-ui link-ui--underline">Mes adresses ({{ customer.addresses_count }})</a></p>
+        <p><a href="{{ settings.wishlist_url | default: '/pages/favoris' }}" class="link-ui link-ui--underline">Mes favoris</a></p>
+        <p><a href="{{ routes.account_logout_url }}" class="link-ui link-ui--underline">Se déconnecter</a></p>
+      </aside>
+    </div>
+  </div>
+</section>

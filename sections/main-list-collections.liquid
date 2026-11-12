@@ -1,0 +1,37 @@
+<section class="mosaic section-space">
+  <div class="page-width">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">l'univers glow&amp;get</p>
+      <h1 class="section-head__title">OUR COLLECTIONS</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    <div class="mosaic__grid">
+      {%- for coll in collections -%}
+        {%- liquid
+          assign pos = forloop.index0 | modulo: 4
+          case pos
+            when 0
+              assign ratio = '3 / 4'
+            when 1
+              assign ratio = '4 / 5'
+            when 2
+              assign ratio = '2 / 3'
+            else
+              assign ratio = '16 / 9'
+          endcase
+        -%}
+        <a href="{{ coll.url }}" class="mosaic__item mosaic__item--{{ pos }}">
+          {% render 'media-slot', image: coll.featured_image, ratio: ratio, label: 'Photo collection', sizes: '(min-width: 990px) 33vw, 50vw' %}
+          <span class="mosaic__caption">
+            <span class="mosaic__title">{{ coll.title }}</span>
+            <span class="mosaic__sub">{{ coll.products_count }} pièce{% if coll.products_count > 1 %}s{% endif %}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Liste des collections", "settings": [] }
+{% endschema %}

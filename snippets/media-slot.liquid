@@ -1,0 +1,55 @@
+{%- comment -%}
+  Emplacement photographique GLOW&GET.
+  Affiche l'image si elle existe, sinon un bloc réservé neutre aux bonnes proportions.
+
+  Paramètres :
+  - image : objet image (optionnel)
+  - ratio : proportion CSS, ex. '4 / 5' (défaut '4 / 5')
+  - label : texte du bloc réservé (ex. 'Photo campagne')
+  - format : indication de format affichée (ex. 'Portrait 4:5')
+  - sizes : attribut sizes
+  - loading : 'eager' ou 'lazy'
+  - class : classes supplémentaires
+  - fit : 'cover' (défaut) ou 'contain'
+  - alt : texte alternatif de secours
+{%- endcomment -%}
+{%- liquid
+  assign ratio = ratio | default: '4 / 5'
+  assign label = label | default: 'Votre photographie'
+  assign sizes = sizes | default: '(min-width: 990px) 50vw, 100vw'
+  assign loading = loading | default: 'lazy'
+  assign fit = fit | default: 'cover'
+-%}
+<div class="slot {{ class }}{% if image == blank %} slot--empty{% endif %}" style="--ratio: {{ ratio }};">
+  {%- if image != blank -%}
+    {%- liquid
+      assign img_alt = image.alt | default: alt | default: shop.name
+      if loading == 'eager'
+        assign fetch = 'high'
+      else
+        assign fetch = 'auto'
+      endif
+      assign img_style = 'object-fit: ' | append: fit | append: '; object-position: ' | append: image.presentation.focal_point | append: ';'
+    -%}
+    {{
+      image
+      | image_url: width: 2400
+      | image_tag:
+        widths: '360, 540, 720, 960, 1200, 1500, 1800, 2400',
+        sizes: sizes,
+        loading: loading,
+        fetchpriority: fetch,
+        alt: img_alt,
+        class: 'slot__img',
+        style: img_style
+    }}
+  {%- else -%}
+    <div class="slot__placeholder" aria-hidden="true">
+      <span class="slot__frame"></span>
+      {% render 'ornament', type: 'sprig', class: 'slot__ornament' %}
+      <span class="slot__brand">Glow&amp;Get</span>
+      <span class="slot__label">{{ label }}</span>
+      {%- if format != blank -%}<span class="slot__format">{{ format }}</span>{%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

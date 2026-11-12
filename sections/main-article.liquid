@@ -1,0 +1,16 @@
+<article class="section-space">
+  <div class="page-width page-width--narrow">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">{{ article.published_at | date: '%d/%m/%Y' }}</p>
+      <h1 class="section-head__title">{{ article.title }}</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    {% render 'media-slot', image: article.image, ratio: '16 / 9', label: 'Photo de couverture', sizes: '(min-width: 990px) 860px, 100vw', loading: 'eager' %}
+    <div class="rte article__body">{{ article.content }}</div>
+    <p><a href="{{ blog.url }}" class="link-ui link-ui--underline">Retour au journal</a></p>
+  </div>
+</article>
+
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

@@ -1,0 +1,15 @@
+<section class="section-space">
+  <div class="page-width account-narrow">
+    <header class="section-head section-head--center">
+      <h1 class="section-head__title">Activer mon compte</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    {%- form 'activate_customer_password', class: 'form' -%}
+      {%- if form.errors -%}<div class="form__error" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <label class="field"><span>Mot de passe</span><input type="password" name="customer[password]" autocomplete="new-password" required></label>
+      <label class="field"><span>Confirmer le mot de passe</span><input type="password" name="customer[password_confirmation]" autocomplete="new-password" required></label>
+      <button type="submit" class="btn btn--solid btn--wide">Activer mon compte</button>
+      <button type="submit" name="decline" class="btn btn--line btn--wide">Refuser l'invitation</button>
+    {%- endform -%}
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<section class="section-space">
+  <div class="page-width page-width--narrow">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">écrivez-nous</p>
+      <h1 class="section-head__title">{{ page.title }}</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+    {%- if page.content != blank -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
+
+    {%- form 'contact', class: 'form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form__success" role="status">Merci, votre message a bien été envoyé. Nous vous répondons sous 48 h.</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <div class="form__error" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="form__row">
+        <label class="field"><span>Nom</span><input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></label>
+        <label class="field"><span>E-mail</span><input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"></label>
+      </div>
+      <label class="field"><span>Numéro de commande (facultatif)</span><input type="text" name="contact[order]"></label>
+      <label class="field"><span>Message</span><textarea name="contact[body]" rows="6" required>{{ form.body }}</textarea></label>
+      <button type="submit" class="btn btn--solid">Envoyer le message</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Formulaire de contact", "settings": [] }
+{% endschema %}

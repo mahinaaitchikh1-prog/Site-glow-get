@@ -1,0 +1,136 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-campaign",
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "layout": "collage",
+            "kicker": "la nouvelle collection",
+            "show_wordmark": true,
+            "slogan": "YOUR STYLE, YOUR GLOW",
+            "button_label": "Découvrir la collection",
+            "button_link": "",
+            "text_position": "center"
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "layout": "diptych",
+            "kicker": "the new edit",
+            "show_wordmark": true,
+            "slogan": "YOUR STYLE, YOUR GLOW",
+            "button_label": "Voir l'édito",
+            "button_link": "",
+            "text_position": "center"
+          }
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {
+            "layout": "full",
+            "kicker": "new arrivals",
+            "show_wordmark": true,
+            "slogan": "YOUR STYLE, YOUR GLOW",
+            "button_label": "Shop all",
+            "button_link": "",
+            "text_position": "left"
+          }
+        }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3"],
+      "settings": { "autoplay": true, "speed": 7 }
+    },
+    "marquee": {
+      "type": "marquee",
+      "settings": { "items": "New Collection, Discover Your Style, GLOW&GET, New Arrivals", "style": "rose" }
+    },
+    "ribbon": {
+      "type": "ornament-banner",
+      "blocks": {
+        "c1": { "type": "collection", "settings": { "label": "Romance", "link": "" } },
+        "c2": { "type": "collection", "settings": { "label": "Soirée", "link": "" } },
+        "c3": { "type": "collection", "settings": { "label": "Dentelle & satin", "link": "" } },
+        "c4": { "type": "collection", "settings": { "label": "Essentiels", "link": "" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": {}
+    },
+    "new-arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "kicker": "fraîchement arrivées",
+        "title": "NEW ARRIVALS",
+        "heading_align": "center",
+        "limit": 8,
+        "columns": 4,
+        "background": "cream",
+        "show_link": true,
+        "link_label": "Voir toutes les nouveautés"
+      }
+    },
+    "new-edit": {
+      "type": "collection-editorial",
+      "settings": {
+        "kicker": "l'édito de la saison",
+        "title": "THE NEW EDIT",
+        "button_label": "Découvrir l'édito",
+        "caption": "Photographié pour GLOW&GET",
+        "composition": "left",
+        "background": "pearl"
+      }
+    },
+    "best-sellers": {
+      "type": "featured-collection",
+      "settings": {
+        "kicker": "vos préférées",
+        "title": "BEST SELLERS",
+        "heading_align": "center",
+        "limit": 4,
+        "columns": 4,
+        "background": "cream",
+        "show_link": true,
+        "link_label": "Voir les best sellers"
+      }
+    },
+    "banner": {
+      "type": "editorial-banner",
+      "settings": {
+        "kicker": "une histoire de satin",
+        "title": "GLOW SEASON",
+        "button_label": "Découvrir",
+        "text_side": "right"
+      }
+    },
+    "collections": {
+      "type": "collection-list",
+      "blocks": {
+        "k1": { "type": "collection", "settings": { "title": "Robes", "subtitle": "pour danser" } },
+        "k2": { "type": "collection", "settings": { "title": "Tops & corsets", "subtitle": "noués de rubans" } },
+        "k3": { "type": "collection", "settings": { "title": "Jupes", "subtitle": "en mouvement" } },
+        "k4": { "type": "collection", "settings": { "title": "Accessoires", "subtitle": "les détails" } }
+      },
+      "block_order": ["k1", "k2", "k3", "k4"],
+      "settings": { "kicker": "l'univers glow&get", "title": "OUR COLLECTIONS", "background": "cream" }
+    },
+    "marquee-2": {
+      "type": "marquee",
+      "settings": { "items": "Shop All, Your Style Your Glow, GLOW&GET, Free Shipping", "style": "bordeaux" }
+    },
+    "shop-all": {
+      "type": "collection-editorial",
+      "settings": {
+        "kicker": "toute la boutique",
+        "title": "SHOP ALL",
+        "text": "<p>Chaque pièce de la maison, de la plus douce à la plus audacieuse.</p>",
+        "button_label": "Voir toute la boutique",
+        "caption": "",
+        "composition": "right",
+        "background": "rose"
+      }
+    }
+  },
+  "order": ["hero", "marquee", "ribbon", "new-arrivals", "new-edit", "best-sellers", "banner", "collections", "marquee-2", "shop-all"]
+}

@@ -1,0 +1,56 @@
+{%- comment -%}
+  Ornements délicats dessinés à la main (traits fins, couleur héritée).
+  type : 'bow' (noeud de ruban), 'flower' (petite fleur), 'sprig' (brin fleuri),
+         'divider' (filet orné), 'star' (petite étoile)
+{%- endcomment -%}
+{%- case type -%}
+  {%- when 'bow' -%}
+    <svg class="ornament ornament--bow {{ class }}" viewBox="0 0 64 40" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M32 16c-6-9-18-14-22-9s4 13 22 9z"/>
+      <path d="M32 16c6-9 18-14 22-9s-4 13-22 9z"/>
+      <ellipse cx="32" cy="16.5" rx="3" ry="3.4"/>
+      <path d="M30.5 19.5c-3 6-7 12-11 17"/>
+      <path d="M33.5 19.5c3 6 7 12 11 17"/>
+      <path d="M19.5 36.5l2.5-3.4M44.5 36.5l-2.5-3.4"/>
+    </svg>
+  {%- when 'flower' -%}
+    <svg class="ornament ornament--flower {{ class }}" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
+      <g transform="translate(20 20)">
+        <ellipse rx="4.6" ry="9" transform="translate(0 -8)"/>
+        <ellipse rx="4.6" ry="9" transform="rotate(72) translate(0 -8)"/>
+        <ellipse rx="4.6" ry="9" transform="rotate(144) translate(0 -8)"/>
+        <ellipse rx="4.6" ry="9" transform="rotate(216) translate(0 -8)"/>
+        <ellipse rx="4.6" ry="9" transform="rotate(288) translate(0 -8)"/>
+        <circle r="2.6" fill="currentColor" stroke="none"/>
+      </g>
+    </svg>
+  {%- when 'sprig' -%}
+    <svg class="ornament ornament--sprig {{ class }}" viewBox="0 0 80 40" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" aria-hidden="true" focusable="false">
+      <path d="M6 30c18-2 40-10 68-22"/>
+      <path d="M20 27c-2-6 1-11 6-12-1 5-2 9-6 12z"/>
+      <path d="M34 22c-1-6 3-10 8-11-1 5-3 9-8 11z"/>
+      <path d="M48 16c0-6 4-9 9-9-2 4-4 8-9 9z"/>
+      <path d="M26 25c5 3 10 3 13 0-4-2-8-2-13 0z"/>
+      <path d="M41 19c5 2 10 1 12-2-4-1-8-1-12 2z"/>
+      <circle cx="74" cy="8" r="2.4"/>
+      <circle cx="74" cy="8" r="0.8" fill="currentColor"/>
+    </svg>
+  {%- when 'divider' -%}
+    <svg class="ornament ornament--divider {{ class }}" viewBox="0 0 220 24" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" aria-hidden="true" focusable="false">
+      <path d="M2 12h82"/>
+      <path d="M136 12h82"/>
+      <path d="M84 12c6-6 12-6 16 0-4 6-10 6-16 0z"/>
+      <path d="M136 12c-6-6-12-6-16 0 4 6 10 6 16 0z"/>
+      <g transform="translate(110 12)">
+        <ellipse rx="2.6" ry="5.4" transform="translate(0 -4.4)"/>
+        <ellipse rx="2.6" ry="5.4" transform="rotate(90) translate(0 -4.4)"/>
+        <ellipse rx="2.6" ry="5.4" transform="rotate(180) translate(0 -4.4)"/>
+        <ellipse rx="2.6" ry="5.4" transform="rotate(270) translate(0 -4.4)"/>
+        <circle r="1.5" fill="currentColor" stroke="none"/>
+      </g>
+    </svg>
+  {%- when 'star' -%}
+    <svg class="ornament ornament--star {{ class }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" focusable="false">
+      <path d="M10 0c.6 5.6 4.4 9.4 10 10-5.6.6-9.4 4.4-10 10-.6-5.6-4.4-9.4-10-10 5.6-.6 9.4-4.4 10-10z"/>
+    </svg>
+{%- endcase -%}

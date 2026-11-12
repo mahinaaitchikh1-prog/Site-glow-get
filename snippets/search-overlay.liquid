@@ -1,0 +1,19 @@
+<div class="search-panel" id="SearchPanel" role="dialog" aria-modal="true" aria-label="Rechercher" data-panel="search" hidden>
+  <div class="search-panel__inner page-width">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-panel__form">
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[prefix]" value="last">
+      <label for="SearchPanelInput" class="visually-hidden">Rechercher un article</label>
+      <input
+        id="SearchPanelInput"
+        type="search"
+        name="q"
+        class="search-panel__input"
+        placeholder="Une robe, une couleur, une référence…"
+        autocomplete="off"
+      >
+      <button type="submit" class="search-panel__submit" aria-label="Lancer la recherche">{% render 'icon', name: 'search' %}</button>
+    </form>
+    <button type="button" class="icon-btn search-panel__close" data-close aria-label="Fermer la recherche">{% render 'icon', name: 'close' %}</button>
+  </div>
+</div>

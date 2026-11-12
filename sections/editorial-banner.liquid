@@ -1,0 +1,48 @@
+<section class="banner banner--{{ section.settings.text_side }}" {{ section.shopify_attributes }}>
+  <div class="banner__media">
+    {% render 'media-slot', image: section.settings.image, ratio: '21 / 9', label: 'Bannière éditoriale', format: 'Panoramique 21:9', sizes: '100vw', class: 'banner__img banner__img--desktop' %}
+    {%- assign mobile_img = section.settings.image_mobile | default: section.settings.image -%}
+    {% render 'media-slot', image: mobile_img, ratio: '4 / 5', label: 'Bannière mobile', format: 'Portrait 4:5', sizes: '100vw', class: 'banner__img banner__img--mobile' %}
+  </div>
+  <div class="banner__card">
+    {% render 'ornament', type: 'flower', class: 'banner__flower' %}
+    {%- if section.settings.kicker != blank -%}
+      <p class="banner__kicker">{{ section.settings.kicker }}</p>
+    {%- endif -%}
+    <h2 class="banner__title">{{ section.settings.title }}</h2>
+    {%- if section.settings.text != blank -%}
+      <div class="banner__text">{{ section.settings.text }}</div>
+    {%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.link | default: routes.all_products_collection_url }}" class="btn btn--solid">{{ section.settings.button_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bannière éditoriale",
+  "class": "section-banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo (ordinateur)", "info": "Format panoramique 21:9 recommandé (ex. 2520 × 1080 px)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Photo (mobile)", "info": "Format portrait 4:5 recommandé" },
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "une histoire de satin" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "BEST SELLERS" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Les pièces que vous portez le plus, réunies dans une seule sélection.</p>" },
+    { "type": "text", "id": "button_label", "label": "Texte du bouton", "default": "Voir les best sellers" },
+    { "type": "url", "id": "link", "label": "Lien" },
+    {
+      "type": "select",
+      "id": "text_side",
+      "label": "Position de l'encart",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Droite" }
+      ],
+      "default": "right"
+    }
+  ],
+  "presets": [{ "name": "Bannière éditoriale" }]
+}
+{% endschema %}

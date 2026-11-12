@@ -1,0 +1,19 @@
+{
+  "type": "footer",
+  "name": "Pied de page",
+  "sections": {
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "kicker": "entre nous",
+        "title": "JOIN THE GLOW&GET CLUB",
+        "text": "<p>Soyez le premier à découvrir nos nouvelles collections, nos pièces exclusives et nos offres spéciales.</p>"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "settings": { "show_payment_icons": true }
+    }
+  },
+  "order": ["newsletter", "footer"]
+}

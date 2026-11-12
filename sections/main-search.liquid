@@ -1,0 +1,40 @@
+<section class="section-space">
+  <div class="page-width">
+    <header class="section-head section-head--center">
+      <p class="section-head__kicker">rechercher</p>
+      <h1 class="section-head__title">{% if search.performed %}« {{ search.terms | escape }} »{% else %}Recherche{% endif %}</h1>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+    </header>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <input type="hidden" name="type" value="product">
+      <label for="SearchPageInput" class="visually-hidden">Rechercher</label>
+      <input id="SearchPageInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Une robe, une couleur, une référence…" class="search-panel__input">
+      <button type="submit" class="btn btn--solid">Rechercher</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- paginate search.results by 24 -%}
+        <p class="search-page__count">{{ search.results_count }} résultat{% if search.results_count > 1 %}s{% endif %}</p>
+        {%- if search.results_count > 0 -%}
+          <div class="grid grid--products" style="--cols: 4;">
+            {%- for item in search.results -%}
+              {%- if item.object_type == 'product' -%}
+                {% render 'product-card', card_product: item %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <p class="empty-note">Aucun article ne correspond à votre recherche. Essayez un autre mot ou une référence.</p>
+        {%- endif -%}
+        {%- if paginate.pages > 1 -%}
+          <nav class="pager" aria-label="Pagination">{{ paginate | default_pagination }}</nav>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Résultats de recherche", "settings": [] }
+{% endschema %}

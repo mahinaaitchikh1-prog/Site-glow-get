@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_bordeaux }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+    {{ 'font-cormorant-latin.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
+    {% render 'font-faces' %}
+
+    {% render 'css-variables' %}
+    {{ 'glowget.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      window.GlowGet = {
+        routes: {
+          root: {{ routes.root_url | json }},
+          cart: {{ routes.cart_url | json }},
+          cartAdd: {{ routes.cart_add_url | json }},
+          cartChange: {{ routes.cart_change_url | json }}
+        },
+        moneyFormat: {{ shop.money_format | json }},
+        cartType: {{ settings.cart_type | json }},
+        strings: {
+          added: "Ajouté au panier",
+          addToCart: "Ajouter au panier",
+          soldOut: "Épuisé",
+          unavailable: "Indisponible",
+          chooseSize: "Choisissez une taille",
+          inStock: "En stock",
+          lowStock: "Plus que [count] pièce(s)",
+          wishlistAdded: "Ajouté à vos favoris",
+          wishlistRemoved: "Retiré de vos favoris",
+          error: "Une erreur est survenue. Merci de réessayer."
+        }
+      };
+    </script>
+    <script src="{{ 'glowget.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}--{{ template.suffix }}{% endif %}">
+    <a class="skip-link" href="#MainContent">Aller au contenu</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% section 'cart-drawer' %}
+    {% render 'search-overlay' %}
+
+    <div class="overlay" data-overlay hidden></div>
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+  </body>
+</html>

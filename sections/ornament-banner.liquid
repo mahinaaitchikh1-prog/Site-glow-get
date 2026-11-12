@@ -1,0 +1,49 @@
+<section class="ribbon" {{ section.shopify_attributes }}>
+  <div class="ribbon__inner page-width">
+    {% render 'ornament', type: 'sprig', class: 'ribbon__sprig ribbon__sprig--l' %}
+    <ul class="ribbon__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="ribbon__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.label }}</a>
+          {%- else -%}
+            <span>{{ block.settings.label }}</span>
+          {%- endif -%}
+        </li>
+        {%- unless forloop.last -%}
+          <li class="ribbon__flower" aria-hidden="true">{% render 'ornament', type: 'flower' %}</li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+    {% render 'ornament', type: 'sprig', class: 'ribbon__sprig ribbon__sprig--r' %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bandeau orné",
+  "class": "section-ribbon",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Mention de collection",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texte (cursif)", "default": "Romance" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bandeau orné",
+      "blocks": [
+        { "type": "collection", "settings": { "label": "Romance" } },
+        { "type": "collection", "settings": { "label": "Soirée" } },
+        { "type": "collection", "settings": { "label": "Dentelle & satin" } },
+        { "type": "collection", "settings": { "label": "Essentiels" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

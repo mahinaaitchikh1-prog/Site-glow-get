@@ -1,0 +1,22 @@
+{%- comment -%}
+  Prix en euros. Paramètres : product (obligatoire), variant (optionnel), use_variant (bool)
+{%- endcomment -%}
+{%- liquid
+  if use_variant
+    assign target = variant | default: product.selected_or_first_available_variant
+    assign p = target.price
+    assign cp = target.compare_at_price
+    assign varies = false
+  else
+    assign p = product.price
+    assign cp = product.compare_at_price
+    assign varies = product.price_varies
+  endif
+-%}
+<span class="price{% if cp > p %} price--sale{% endif %}" data-price>
+  {%- if varies -%}<span class="price__from">dès</span> {% endif -%}
+  <span class="price__current">{{ p | money }}</span>
+  {%- if cp > p -%}
+    <s class="price__compare">{{ cp | money }}</s>
+  {%- endif -%}
+</span>

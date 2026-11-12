@@ -1,0 +1,20 @@
+{%- liquid
+  assign snap = settings.snapchat_handle | default: 'glow.get'
+  assign tiktok = settings.tiktok_handle | default: 'glow.get'
+-%}
+<ul class="social {{ class }}" role="list">
+  <li>
+    <a href="https://www.snapchat.com/add/{{ snap | url_encode }}" target="_blank" rel="noopener" class="social__link">
+      {% render 'icon', name: 'snapchat' %}
+      <span class="social__name">Snapchat <span class="social__handle">{{ snap }}</span></span>
+      <span class="visually-hidden">(s'ouvre dans un nouvel onglet)</span>
+    </a>
+  </li>
+  <li>
+    <a href="https://www.tiktok.com/@{{ tiktok | url_encode }}" target="_blank" rel="noopener" class="social__link">
+      {% render 'icon', name: 'tiktok' %}
+      <span class="social__name">TikTok <span class="social__handle">@{{ tiktok }}</span></span>
+      <span class="visually-hidden">(s'ouvre dans un nouvel onglet)</span>
+    </a>
+  </li>
+</ul>

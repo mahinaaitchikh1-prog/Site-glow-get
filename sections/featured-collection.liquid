@@ -1,0 +1,78 @@
+{%- liquid
+  assign coll = section.settings.collection
+  assign limit = section.settings.limit
+  assign cols = section.settings.columns
+-%}
+<section class="shelf section-space bg-{{ section.settings.background }}" {{ section.shopify_attributes }}>
+  <div class="page-width">
+    <header class="section-head section-head--{{ section.settings.heading_align }}">
+      {%- if section.settings.kicker != blank -%}
+        <p class="section-head__kicker">{{ section.settings.kicker }}</p>
+      {%- endif -%}
+      <h2 class="section-head__title">{{ section.settings.title }}</h2>
+      {% render 'ornament', type: 'divider', class: 'section-head__divider' %}
+      {%- if section.settings.text != blank -%}
+        <div class="section-head__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </header>
+
+    <div class="grid grid--products" style="--cols: {{ cols }};">
+      {%- if coll != blank and coll.products_count > 0 -%}
+        {%- for product in coll.products limit: limit -%}
+          {% render 'product-card', card_product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+          {% render 'product-card', index: i %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_link -%}
+      <div class="shelf__more">
+        <a href="{{ coll.url | default: routes.all_products_collection_url }}" class="link-ui link-ui--underline">
+          {{ section.settings.link_label }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grille de produits",
+  "class": "section-shelf",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Petit texte cursif", "default": "fraîchement arrivées" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "NEW ARRIVALS" },
+    { "type": "richtext", "id": "text", "label": "Texte d'introduction" },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "label": "Alignement du titre",
+      "options": [
+        { "value": "center", "label": "Centré" },
+        { "value": "left", "label": "À gauche" }
+      ],
+      "default": "center"
+    },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Nombre d'articles", "min": 2, "max": 16, "step": 1, "default": 8 },
+    { "type": "range", "id": "columns", "label": "Articles par ligne (ordinateur)", "min": 2, "max": 4, "step": 1, "default": 4 },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "cream", "label": "Crème" },
+        { "value": "pearl", "label": "Gris perle" },
+        { "value": "rose", "label": "Rose poudré" }
+      ],
+      "default": "cream"
+    },
+    { "type": "checkbox", "id": "show_link", "label": "Afficher le lien « tout voir »", "default": true },
+    { "type": "text", "id": "link_label", "label": "Texte du lien", "default": "Voir toute la sélection" }
+  ],
+  "presets": [{ "name": "Grille de produits" }]
+}
+{% endschema %}

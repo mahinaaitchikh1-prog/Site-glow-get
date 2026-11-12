@@ -1,0 +1,70 @@
+{%- assign coll_menu = section.settings.collections_menu -%}
+<footer class="footer" {{ section.shopify_attributes }}>
+  <div class="footer__top page-width">
+    <div class="footer__brand">
+      <a href="{{ routes.root_url }}" class="footer__logo">{% render 'logo', size: 'footer' %}</a>
+      <p class="footer__slogan">Your style, your glow</p>
+      {%- if section.settings.about != blank -%}
+        <div class="footer__about">{{ section.settings.about }}</div>
+      {%- endif -%}
+    </div>
+
+    <nav class="footer__col" aria-labelledby="FooterCollections">
+      <h2 class="footer__heading" id="FooterCollections">Collections</h2>
+      <ul role="list">
+        {%- for link in coll_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- else -%}
+          <li><a href="{{ routes.all_products_collection_url }}">Shop all</a></li>
+          <li><a href="{{ routes.collections_url }}/new-arrivals">New arrivals</a></li>
+          <li><a href="{{ routes.collections_url }}/best-sellers">Best sellers</a></li>
+          <li><a href="{{ routes.collections_url }}">Our collections</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-labelledby="FooterHelp">
+      <h2 class="footer__heading" id="FooterHelp">La maison</h2>
+      <ul role="list">
+        <li><a href="{{ section.settings.contact_url | default: '/pages/contact' }}">Contact</a></li>
+        <li><a href="/policies/shipping-policy">Livraison</a></li>
+        <li><a href="/policies/refund-policy">Retours &amp; remboursements</a></li>
+        <li><a href="/policies/terms-of-service">Conditions générales de vente</a></li>
+        <li><a href="/policies/privacy-policy">Politique de confidentialité</a></li>
+        <li><a href="/policies/legal-notice">Mentions légales</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__col footer__follow">
+      <h2 class="footer__heading footer__heading--script">FOLLOW OUR WORLD</h2>
+      {% render 'social-links', class: 'social--footer' %}
+    </div>
+  </div>
+
+  <div class="footer__ornament" aria-hidden="true">{% render 'ornament', type: 'divider' %}</div>
+
+  <div class="footer__bottom page-width">
+    <p class="footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.</p>
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="footer__pay" role="list" aria-label="Moyens de paiement acceptés">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'pay-icon' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "class": "section-footer",
+  "settings": [
+    { "type": "richtext", "id": "about", "label": "Texte de présentation", "default": "<p>Maison de mode féminine. Des pièces romantiques et audacieuses, dessinées pour briller.</p>" },
+    { "type": "link_list", "id": "collections_menu", "label": "Menu des collections", "default": "footer" },
+    { "type": "url", "id": "contact_url", "label": "Lien de la page contact" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Afficher les moyens de paiement", "default": true }
+  ]
+}
+{% endschema %}
