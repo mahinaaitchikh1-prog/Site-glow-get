@@ -40,22 +40,62 @@
           }
         }
       },
-      "block_order": ["slide-1", "slide-2", "slide-3"],
-      "settings": { "autoplay": true, "speed": 7 }
+      "block_order": [
+        "slide-1",
+        "slide-2",
+        "slide-3"
+      ],
+      "settings": {
+        "autoplay": true,
+        "speed": 7,
+        "background": "rose"
+      }
     },
     "marquee": {
       "type": "marquee",
-      "settings": { "items": "New Collection, Discover Your Style, GLOW&GET, New Arrivals", "style": "rose" }
+      "settings": {
+        "items": "New Collection, Discover Your Style, GLOW&GET, New Arrivals",
+        "style": "rose"
+      }
     },
     "ribbon": {
       "type": "ornament-banner",
       "blocks": {
-        "c1": { "type": "collection", "settings": { "label": "Romance", "link": "" } },
-        "c2": { "type": "collection", "settings": { "label": "Soirée", "link": "" } },
-        "c3": { "type": "collection", "settings": { "label": "Dentelle & satin", "link": "" } },
-        "c4": { "type": "collection", "settings": { "label": "Essentiels", "link": "" } }
+        "c1": {
+          "type": "collection",
+          "settings": {
+            "label": "Romance",
+            "link": ""
+          }
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {
+            "label": "Soirée",
+            "link": ""
+          }
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {
+            "label": "Dentelle & satin",
+            "link": ""
+          }
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {
+            "label": "Essentiels",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["c1", "c2", "c3", "c4"],
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
       "settings": {}
     },
     "new-arrivals": {
@@ -66,7 +106,7 @@
         "heading_align": "center",
         "limit": 8,
         "columns": 4,
-        "background": "cream",
+        "background": "rose",
         "show_link": true,
         "link_label": "Voir toutes les nouveautés"
       }
@@ -79,7 +119,7 @@
         "button_label": "Découvrir l'édito",
         "caption": "Photographié pour GLOW&GET",
         "composition": "left",
-        "background": "pearl"
+        "background": "bordeaux"
       }
     },
     "best-sellers": {
@@ -90,7 +130,7 @@
         "heading_align": "center",
         "limit": 4,
         "columns": 4,
-        "background": "cream",
+        "background": "powder",
         "show_link": true,
         "link_label": "Voir les best sellers"
       }
@@ -107,17 +147,53 @@
     "collections": {
       "type": "collection-list",
       "blocks": {
-        "k1": { "type": "collection", "settings": { "title": "Robes", "subtitle": "pour danser" } },
-        "k2": { "type": "collection", "settings": { "title": "Tops & corsets", "subtitle": "noués de rubans" } },
-        "k3": { "type": "collection", "settings": { "title": "Jupes", "subtitle": "en mouvement" } },
-        "k4": { "type": "collection", "settings": { "title": "Accessoires", "subtitle": "les détails" } }
+        "k1": {
+          "type": "collection",
+          "settings": {
+            "title": "Robes",
+            "subtitle": "pour danser"
+          }
+        },
+        "k2": {
+          "type": "collection",
+          "settings": {
+            "title": "Tops & corsets",
+            "subtitle": "noués de rubans"
+          }
+        },
+        "k3": {
+          "type": "collection",
+          "settings": {
+            "title": "Jupes",
+            "subtitle": "en mouvement"
+          }
+        },
+        "k4": {
+          "type": "collection",
+          "settings": {
+            "title": "Accessoires",
+            "subtitle": "les détails"
+          }
+        }
       },
-      "block_order": ["k1", "k2", "k3", "k4"],
-      "settings": { "kicker": "l'univers glow&get", "title": "OUR COLLECTIONS", "background": "cream" }
+      "block_order": [
+        "k1",
+        "k2",
+        "k3",
+        "k4"
+      ],
+      "settings": {
+        "kicker": "l'univers glow&get",
+        "title": "OUR COLLECTIONS",
+        "background": "rose"
+      }
     },
     "marquee-2": {
       "type": "marquee",
-      "settings": { "items": "Shop All, Your Style Your Glow, GLOW&GET, Free Shipping", "style": "bordeaux" }
+      "settings": {
+        "items": "Shop All, Your Style Your Glow, GLOW&GET, Free Shipping",
+        "style": "rose"
+      }
     },
     "shop-all": {
       "type": "collection-editorial",
@@ -128,9 +204,20 @@
         "button_label": "Voir toute la boutique",
         "caption": "",
         "composition": "right",
-        "background": "rose"
+        "background": "bordeaux"
       }
     }
   },
-  "order": ["hero", "marquee", "ribbon", "new-arrivals", "new-edit", "best-sellers", "banner", "collections", "marquee-2", "shop-all"]
+  "order": [
+    "hero",
+    "marquee",
+    "ribbon",
+    "new-arrivals",
+    "new-edit",
+    "best-sellers",
+    "banner",
+    "collections",
+    "marquee-2",
+    "shop-all"
+  ]
 }

@@ -1,6 +1,6 @@
 {%- assign slides = section.blocks | where: 'type', 'slide' -%}
 <section
-  class="hero"
+  class="hero hero--bg-{{ section.settings.background }}"
   data-slider
   data-autoplay="{{ section.settings.autoplay }}"
   data-speed="{{ section.settings.speed | times: 1000 }}"
@@ -84,6 +84,18 @@
   "class": "section-hero",
   "max_blocks": 6,
   "settings": [
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond de la campagne",
+      "options": [
+        { "value": "rose", "label": "Rose pâle" },
+        { "value": "powder", "label": "Rose poudré" },
+        { "value": "pearl", "label": "Gris perle" },
+        { "value": "bordeaux", "label": "Bordeaux" }
+      ],
+      "default": "rose"
+    },
     { "type": "checkbox", "id": "autoplay", "label": "Défilement automatique", "default": true },
     { "type": "range", "id": "speed", "label": "Durée de chaque diapositive", "min": 4, "max": 12, "step": 1, "unit": "s", "default": 7 }
   ],
